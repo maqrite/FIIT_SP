@@ -92,7 +92,7 @@ public:
 
   B_tree &operator=(B_tree &&other) noexcept;
 
-  ~B_tree() { clear(); }
+  ~B_tree() noexcept;
 
   // endregion five declaration
 
@@ -426,16 +426,16 @@ template <typename tkey, typename tvalue, comparator<tkey> compare,
           std::size_t t>
 B_tree<tkey, tvalue, compare, t>::B_tree(const compare &cmp,
                                          pp_allocator<value_type> alloc)
-    : compare(cmp), _allocator(alloc), _root(nullptr), _size(0);
-{
+    : _allocator(alloc), _root(nullptr), _size(0) {
+  *static_cast<compare *>(this) = cmp;
 }
 
 template <typename tkey, typename tvalue, comparator<tkey> compare,
           std::size_t t>
 B_tree<tkey, tvalue, compare, t>::B_tree(pp_allocator<value_type> alloc,
                                          const compare &comp)
-    : compare(comp), _allocator(alloc), _root(nullptr), _size(0);
-{
+    : _allocator(alloc), _root(nullptr), _size(0) {
+  *static_cast<compare *>(this) = comp;
 }
 
 template <typename tkey, typename tvalue, comparator<tkey> compare,
@@ -477,10 +477,7 @@ B_tree<tkey, tvalue, compare, t>::B_tree(
 template <typename tkey, typename tvalue, comparator<tkey> compare,
           std::size_t t>
 B_tree<tkey, tvalue, compare, t>::~B_tree() noexcept {
-  throw not_implemented(
-      "template<typename tkey, typename tvalue, comparator<tkey> compare, "
-      "std::size_t t> B_tree<tkey, tvalue, compare, t>::~B_tree() noexcept",
-      "your code should be here...");
+  clear();
 }
 
 template <typename tkey, typename tvalue, comparator<tkey> compare,
