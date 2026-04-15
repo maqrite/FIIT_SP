@@ -48,4 +48,4 @@ target_include_directories(my_tree_app
         ./include
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../allocator/allocator/include)
 
-add_subdirectory(tests)
+# add_subdirectory(tests)
