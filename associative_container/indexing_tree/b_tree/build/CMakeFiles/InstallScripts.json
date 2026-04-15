@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/agrikhanov/Desktop/labs_4sem/FIIT_SP/associative_container/indexing_tree/b_tree/build/cmake_install.cmake",
+		"/Users/agrikhanov/Desktop/labs_4sem/FIIT_SP/associative_container/indexing_tree/b_tree/build/tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
