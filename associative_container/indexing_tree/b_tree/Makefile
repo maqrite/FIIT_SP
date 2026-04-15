@@ -19,6 +19,5 @@ run: all
 
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f compile_commands.json
 
 rebuild: clean all

@@ -24,7 +24,6 @@ target_include_directories(
 target_link_libraries(
         sys_prog_assctv_cntnr_indxng_tr_b_tr
         PUBLIC
-        sys_prog_assctv_cntnr
         ${BOOST_LIBRARIES})
 
 target_link_directories(
