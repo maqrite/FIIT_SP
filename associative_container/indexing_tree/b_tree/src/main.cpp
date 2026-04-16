@@ -3,6 +3,13 @@
 #include <iostream>
 #include <string>
 
+void print_const_tree(const B_tree<int, std::string, std::less<int>, 3> &tree) {
+  std::cout << "Константный обход: " << std::endl;
+  for (auto it = tree.cbegin(); it != tree.cend(); ++it) {
+    std::cout << it->first << " : " << it->second << std::endl;
+  }
+}
+
 int main() {
   try {
     test_mem_resource mr;
@@ -20,6 +27,20 @@ int main() {
       std::cout << "Поиск в пустом дереве работает корректно (ключ не найден)."
                 << std::endl;
     }
+
+    tree.insert({10, "десять"});
+    tree.insert({20, "двадцать"});
+    tree.insert({5, "пять"});
+
+    std::cout << "Данные вставлены успешно" << std::endl;
+    std::cout << "Текущий размер дерева: " << tree.size() << std::endl;
+
+    std::cout << "Содержимое дерева:" << std::endl;
+    for (auto it = tree.begin(); it != tree.end(); ++it) {
+      std::cout << it->first << " => " << it->second << std::endl;
+    }
+
+    print_const_tree(tree);
 
   } catch (const std::exception &e) {
     std::cerr << "Поймали исключение: " << e.what() << std::endl;
