@@ -5,6 +5,7 @@
 cmake-build-*
 *.txt
 !CMakeLists.txt
+build/
 
 # Compiled Object files
 *.slo
