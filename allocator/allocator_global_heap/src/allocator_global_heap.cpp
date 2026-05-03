@@ -1,49 +1,60 @@
-#include <not_implemented.h>
 #include "../include/allocator_global_heap.h"
+#include <cstddef>
+#include <memory_resource>
+#include <stdexcept>
 
-allocator_global_heap::allocator_global_heap()
-{
-    throw not_implemented("allocator_global_heap::allocator_global_heap()", "your code should be here...");
+allocator_global_heap::allocator_global_heap() {}
+
+[[nodiscard]] void *allocator_global_heap::do_allocate_sm(size_t size) {
+  constexpr size_t MAGIC_COOKIE = 0xDEADBEEF;
+
+  size_t total_size = size + 2 * size_t_size;
+  void *ptr = ::operator new(total_size);
+
+  size_t *meta = static_cast<size_t *>(ptr);
+  meta[0] = MAGIC_COOKIE;
+  meta[1] = size;
+
+  return meta + 2;
 }
 
-[[nodiscard]] void *allocator_global_heap::do_allocate_sm(
-    size_t size)
-{
-    throw not_implemented("[[nodiscard]] void *allocator_global_heap::do_allocate_sm(size_t)", "your code should be here...");
+void allocator_global_heap::do_deallocate_sm(void *at) {
+  if (at == nullptr) {
+    return;
+  }
+
+  constexpr size_t MAGIC_COOKIE = 0xDEADBEEF;
+
+  size_t *meta = static_cast<size_t *>(at) - 2;
+
+  if (meta[0] != MAGIC_COOKIE) {
+    throw std::logic_error("Segmentation Fault pobezhden");
+  }
+
+  meta[0] = 0;
+
+  ::operator delete(meta);
 }
 
-void allocator_global_heap::do_deallocate_sm(
-    void *at)
-{
-    throw not_implemented("void allocator_global_heap::do_deallocate_sm(void *)", "your code should be here...");
+allocator_global_heap::~allocator_global_heap() {}
+
+allocator_global_heap::allocator_global_heap(
+    const allocator_global_heap &other) {}
+
+allocator_global_heap &
+allocator_global_heap::operator=(const allocator_global_heap &other) {
+  return *this;
 }
 
-allocator_global_heap::~allocator_global_heap()
-{
-    throw not_implemented("allocator_global_heap::~allocator_global_heap()", "your code should be here...");
+bool allocator_global_heap::do_is_equal(
+    const std::pmr::memory_resource &other) const noexcept {
+  return dynamic_cast<const allocator_global_heap *>(&other) != nullptr;
 }
 
-allocator_global_heap::allocator_global_heap(const allocator_global_heap &other)
-{
-    throw not_implemented("allocator_global_heap::allocator_global_heap(const allocator_global_heap &other)", "your code should be here...");
-}
+allocator_global_heap::allocator_global_heap(
+    allocator_global_heap &&other) noexcept {}
 
-allocator_global_heap &allocator_global_heap::operator=(const allocator_global_heap &other)
-{
-    throw not_implemented("allocator_global_heap &allocator_global_heap::operator=(const allocator_global_heap &other)", "your code should be here...");
-}
-
-bool allocator_global_heap::do_is_equal(const std::pmr::memory_resource &other) const noexcept
-{
-    throw not_implemented("bool allocator_global_heap::do_is_equal(const std::pmr::memory_resource &other) const noexcept", "your code should be here...");
-}
-
-allocator_global_heap::allocator_global_heap(allocator_global_heap &&other) noexcept
-{
-    throw not_implemented("allocator_global_heap::allocator_global_heap(allocator_global_heap &&) noexcept", "your code should be here...");
-}
-
-allocator_global_heap &allocator_global_heap::operator=(allocator_global_heap &&other) noexcept
-{
-    throw not_implemented("allocator_global_heap &allocator_global_heap::operator=(allocator_global_heap &&) noexcept", "your code should be here...");
+allocator_global_heap &
+allocator_global_heap::operator=(allocator_global_heap &&other) noexcept {
+  return *this;
 }
